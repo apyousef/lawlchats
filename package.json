@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "Lawlchats",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,6 +8,21 @@
   "dependencies": {
     "express": "3.0.0rc2",
     "jade": "*",
-    "mongodb":"1.1.2"
-  }
+    "mongodb": "1.1.2",
+    "hiredis": "*",
+    "socket.io": "*",
+    "redis":"*"
+  },
+  "description": "lawlchats =========",
+  "main": "lawlchats.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/apyousef/lawlchats.git"
+  },
+  "keywords": [
+    "lawl"
+  ],
+  "author": "Lawlchats",
+  "license": "BSD"
 }
