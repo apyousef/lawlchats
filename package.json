@@ -9,6 +9,7 @@
     "express": "3.0.0rc2",
     "jade": "*",
     "mongodb": "1.1.2",
+    "mongoose": "2.7.3",
     "hiredis": "*",
     "socket.io": "*",
     "redis":"*"

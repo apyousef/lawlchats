@@ -11,29 +11,10 @@ var express = require('express')
 
 
 var app = express();
-var db_connector = common.db_connection;
+var mongo_conn = common.mongo_conn;
 
-db_connector.open(function(err, db){
-    db.collectionNames(function(err, collections){
-        if (err) { throw err; }
-    });
-
-    db.createCollection("test", function(err, collection){
-        if (err) { throw err; }
-    });
-
-    db.createCollection("chatroom", function(err, collection){
-        if (err) { throw err; }
-    });
-
-    db.createCollection("user", function(err, collection){
-        if (err) { throw err; }
-});
-
-    db.createCollection("message", function(err, collection){
-        if (err) { throw err; }
-    });
-});
+var ChatRoom = require('./model/ChatRoom.js'),
+    Message = require('./model/Message.js');
 
 app.configure(function(){
     app.set('port', process.env.PORT || 3000);
@@ -43,8 +24,8 @@ app.configure(function(){
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
+    app.use(express.static(path.join(__dirname, 'static')));
     app.use(app.router);
-    app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
@@ -54,7 +35,13 @@ app.configure('development', function(){
 app.get('/', routes.index);
 
 app.post('/message/new', function(req, res){
-  console.log("req = " + req.param);
+  console.log("req.body.text = " + req.body.text);
+  console.log("req.body.user = " + req.body.user);
+  var m = new Message();
+  m.user = req.body.user;
+  m.message_text = req.body.text;
+  m.save();
+  
 });
 
 var server = http.createServer(app).listen(app.get('port'), function(){
@@ -64,8 +51,8 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 var io = require('socket.io').listen(server)
 
 io.sockets.on('connection', function (socket) {
-    socket.on('join_room', function (name) {
-        
+    socket.on('join_room', function (data) {
+        socket.emit('confirm_join', {confirmed: true, username: data.username, room: data.room});
     });
 });
 

@@ -1,12 +1,12 @@
-var mongo = require('mongodb'),
-    mongoserver = new mongo.Server('localhost', mongo.Connection.DEFAULT_PORT),
-    db_connection = new mongo.Db('lawlchatsnode', mongoserver),
+var mongoose = require('mongoose'),
     redis = require('redis'),
     redis_client = redis.createClient(6383, 'localhost');
 
+var mongo_conn = mongoose.createConnection('mongodb://localhost:27017/lawlchatgoose');
+
+
 Common = {
-	mongoserver: mongoserver,
-	db_connection: db_connection,
+	mongo_conn: mongo_conn,
 	redis_client: redis_client
 };
 

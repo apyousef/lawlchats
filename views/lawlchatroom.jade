@@ -2,24 +2,46 @@ doctype 5
 html(lang="en")
     head
         title LawlChats
+
         script(type='text/javascript')
             function junk() {
                 console.log('dildo');
+                var submitForm = document.forms[0];
+                var textVal = submitForm.elements["testinput"].value;
+                console.log('textVal = ' + textVal);
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "/message/new/", true);
                 xhr.setRequestHeader("Content-type", "application/json");
-                xhr.send(JSON.stringify({'param':'test'}));
+                xhr.send(JSON.stringify({'text':textVal, 'user':'ayousef'}));
             }
+
+        script(type= "text/javascript", src="/socket.io/socket.io.js")
+        script(type= "text/javascript", src="/jquery/jquery.js")
+    
     body
         h1 LawlChat
-        form(name='testsubmit', action='javascript:junk()', method='get')
-            input(type='text', name='testinput')
+        form(name='testsubmit', action='javascript:junk()', method='get', onsubmit="join_room()")
+            table
+                tr 
+                    th Username: 
+                    td
+                        input(type='text', name='username', id='username')
+                tr
+                    th Chatroom: 
+                    td
+                        input(type='text', name='room', id='room')
             input(type='submit', name='testsubmitbutton', value='Go!')
-    script(type= "text/javascript", src="/socket.io/socket.io.js")
+    
     script(type= "text/javascript")
-        var socket = io.connect(); // TIP: .connect with no args does auto-discovery
-        socket.on('connect', function () { // TIP: you can avoid listening on `connect` and listen on events directly too!
-            socket.emit('ferret', 'tobi', function (data) {
-                console.log(data); // data will be 'woot'
-            });
+        var socket = io.connect();
+        var join_room = function () {
+            var room = $('#room').val()
+            var username = $('#username').val()
+            socket.emit('join_room', { 'room': room, 'username': username});
+        }
+
+        socket.on('confirm_join', function (confirmation) {
+            if (confirmation.confirmed) {
+                console.log("Joined room "+confirmation.room+" with name "+confirmation.username);
+            }
         });
