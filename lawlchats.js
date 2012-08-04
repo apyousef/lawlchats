@@ -11,6 +11,10 @@ var express = require('express')
 
 
 var app = express();
+var mongo_conn = common.mongo_conn;
+
+
+/*
 var db_connector = common.db_connection;
 
 db_connector.open(function(err, db){
@@ -28,13 +32,13 @@ db_connector.open(function(err, db){
 
     db.createCollection("user", function(err, collection){
         if (err) { throw err; }
-});
+    });
 
     db.createCollection("message", function(err, collection){
         if (err) { throw err; }
     });
 });
-
+*/
 app.configure(function(){
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
@@ -54,7 +58,7 @@ app.configure('development', function(){
 app.get('/', routes.index);
 
 app.post('/message/new', function(req, res){
-  console.log("req = " + req.param);
+  console.log("req = " + req.body.key1);
 });
 
 var server = http.createServer(app).listen(app.get('port'), function(){
