@@ -11,6 +11,13 @@ var express = require('express')
 
 
 var app = express();
+var db_connector = common.db_connection;
+
+db_connector.open(function(err, db){
+	db.collectionNames(function(err, collections){
+		console.log(collections);
+	});
+});
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -32,5 +39,5 @@ app.get('/', routes.index);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
-  console.log("common.db_connection = " + common.db_connection);
+  console.log("common = " + common.db_connection);
 });
