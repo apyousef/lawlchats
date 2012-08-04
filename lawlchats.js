@@ -9,6 +9,9 @@ var express = require('express')
   , path = require('path')
   , mongo = require('mongodb');
 
+var mongoserver = new mongo.Server('localhost', mongo.Connection.DEFAULT_PORT),
+    db_connector = new mongo.Db('lawlchatsnode', mongoserver);
+
 var app = express();
 
 app.configure(function(){
