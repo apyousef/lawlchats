@@ -7,10 +7,8 @@ var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path')
-  , mongo = require('mongodb');
+  , common = require('./common.js');
 
-var mongoserver = new mongo.Server('localhost', mongo.Connection.DEFAULT_PORT),
-    db_connector = new mongo.Db('lawlchatsnode', mongoserver);
 
 var app = express();
 
@@ -34,4 +32,5 @@ app.get('/', routes.index);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
+  console.log("common.db_connection = " + common.db_connection);
 });
