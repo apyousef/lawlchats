@@ -9,7 +9,7 @@ html(lang="en")
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "/message/new/", true);
                 xhr.setRequestHeader("Content-type", "application/json");
-                xhr.send(JSON.stringify({'param':'test'}));
+                xhr.send(JSON.stringify({'key1':'test'}));
             }
 
         script(type= "text/javascript", src="/socket.io/socket.io.js")
