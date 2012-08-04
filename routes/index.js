@@ -4,5 +4,5 @@
  */
 
 exports.index = function(req, res){
-  res.render('new_index', { title: 'World' });
+  res.render('lawlchatroom', {'LawlChats':'Test'});
 };
