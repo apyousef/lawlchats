@@ -6,7 +6,7 @@ var mongo_conn = mongoose.createConnection('mongodb://localhost:27017/lawlchatgo
 
 
 Common = {
-	mongo_conn: mongoose.connection,
+	mongo_conn: mongo_conn,
 	redis_client: redis_client
 };
 

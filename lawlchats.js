@@ -13,32 +13,9 @@ var express = require('express')
 var app = express();
 var mongo_conn = common.mongo_conn;
 
+var ChatRoom = require('./model/ChatRoom.js'),
+    Message = require('./model/Message.js');
 
-/*
-var db_connector = common.db_connection;
-
-db_connector.open(function(err, db){
-    db.collectionNames(function(err, collections){
-        if (err) { throw err; }
-    });
-
-    db.createCollection("test", function(err, collection){
-        if (err) { throw err; }
-    });
-
-    db.createCollection("chatroom", function(err, collection){
-        if (err) { throw err; }
-    });
-
-    db.createCollection("user", function(err, collection){
-        if (err) { throw err; }
-    });
-
-    db.createCollection("message", function(err, collection){
-        if (err) { throw err; }
-    });
-});
-*/
 app.configure(function(){
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
@@ -58,7 +35,13 @@ app.configure('development', function(){
 app.get('/', routes.index);
 
 app.post('/message/new', function(req, res){
-  console.log("req = " + req.body.key1);
+  console.log("req.body.text = " + req.body.text);
+  console.log("req.body.user = " + req.body.user);
+  var m = new Message();
+  m.user = req.body.user;
+  m.message_text = req.body.text;
+  m.save();
+  
 });
 
 var server = http.createServer(app).listen(app.get('port'), function(){

@@ -5,10 +5,13 @@ html(lang="en")
         script(type='text/javascript')
             function junk() {
                 console.log('dildo');
+                var submitForm = document.forms[0];
+                var textVal = submitForm.elements["testinput"].value;
+                console.log('textVal = ' + textVal);
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "/message/new/", true);
                 xhr.setRequestHeader("Content-type", "application/json");
-                xhr.send(JSON.stringify({'key1':'test'}));
+                xhr.send(JSON.stringify({'text':textVal, 'user':'ayousef'}));
             }
     body
         h1 LawlChat
