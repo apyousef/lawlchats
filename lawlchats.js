@@ -28,7 +28,7 @@ db_connector.open(function(err, db){
 
     db.createCollection("user", function(err, collection){
         if (err) { throw err; }
-});
+    });
 
     db.createCollection("message", function(err, collection){
         if (err) { throw err; }
@@ -43,8 +43,8 @@ app.configure(function(){
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
+    app.use(express.static(path.join(__dirname, 'static')));
     app.use(app.router);
-    app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
@@ -64,8 +64,8 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 var io = require('socket.io').listen(server)
 
 io.sockets.on('connection', function (socket) {
-    socket.on('join_room', function (name) {
-        
+    socket.on('join_room', function (data) {
+        socket.emit('confirm_join', {confirmed: true, username: data.username, room: data.room});
     });
 });
 
