@@ -53,6 +53,10 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 
+app.post('/message/new', function(req, res){
+  console.log("req = " + req.param);
+});
+
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

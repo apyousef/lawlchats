@@ -5,6 +5,10 @@ html(lang="en")
         script(type='text/javascript')
             function junk() {
                 console.log('dildo');
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/message/new/", true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send(JSON.stringify({'param':'test'}));
             }
     body
         h1 LawlChat
