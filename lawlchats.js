@@ -15,7 +15,23 @@ var db_connector = common.db_connection;
 
 db_connector.open(function(err, db){
 	db.collectionNames(function(err, collections){
-		console.log(collections);
+		if (err) { throw err; }
+	});
+
+	db.createCollection("test", function(err, collection){
+		if (err) { throw err; }
+	});
+
+	db.createCollection("chatroom", function(err, collection){
+		if (err) { throw err; }
+	});
+
+	db.createCollection("user", function(err, collection){
+		if (err) { throw err; }
+	});
+
+	db.createCollection("message", function(err, collection){
+		if (err) { throw err; }
 	});
 });
 
@@ -36,6 +52,8 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
