@@ -12,7 +12,7 @@ var ChatRoomSchema = new Schema({
     messageIdArray: [String]
 });
 
-ChatRoomSchema.methods.enterRoom = function enterRoom(userString){
+ChatRoomSchema.methods.enterRoom = function enterRoom(userString, cb){
 	console.log("this.usersArray = " + this.usersArray);
 	console.log("userString = " + userString);
 	if (this.usersArray.indexOf(userString) == -1) {
@@ -20,8 +20,7 @@ ChatRoomSchema.methods.enterRoom = function enterRoom(userString){
 		console.log("returning true");
 		return true;
 	}
-	console.log("returning false");
-	return false;
+	return true;
 };
 
 ChatRoomSchema.methods.exitRoom = function exitRoom(userString){
@@ -38,15 +37,16 @@ ChatRoomSchema.statics.getRedisKeyForId = function getRedisKeyForId(roomId){
 	return "chatroom." + roomId;
 }
 
-ChatRoomSchema.methods.getChatRoom = function getChatRoom(){
-	var messageObjectArray = redis_client.lrange(ChatRoomSchema.statics.getRedisKeyForId(this.id), 0, -1);
-	console.log("messageObjectArray = " + messageObjectArray);
-	var chatRoom = {
-		name: this.name,
-		users: this.users,
-		messages: messageObjectArray
-	};
-	return chatRoom;
+ChatRoomSchema.methods.getChatRoom = function getChatRoom(cb){
+		var that = this;
+		redis_client.lrange(ChatRoomSchema.statics.getRedisKeyForId(this.id), 0, -1, function(err, res){
+				var chatRoom = {
+					name: that.name,
+					users: that.usersArray,
+					messages: res
+			};
+			cb(chatRoom);
+		});
 };
 
 module.exports = mongo_conn.model('chatroom', ChatRoomSchema);
