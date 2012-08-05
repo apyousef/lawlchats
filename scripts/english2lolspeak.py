@@ -6,7 +6,7 @@ import json
 import re
 
 lookup = None
-with open('tranzlator.json', 'r') as f:
+with open('scripts/tranzlator.json', 'r') as f:
     lookup = json.loads(f.read())
 
 def lolify_word(matchobj):

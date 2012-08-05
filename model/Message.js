@@ -10,6 +10,7 @@ var mongo_conn = common.mongo_conn,
 
 var MessageSchema = new Schema({
     messageText: String,
+    lollifiedText:{type:String, default:'I can HAZ cheezburger???'},
     user: {type:String, default:'anonymous'},
     url: {type:String, default:'http://media.treehugger.com/assets/images/2011/10/al-gore-newt-gingrich-climate.jpg'},
     timestamp: {type:Date, default:Date.now},
@@ -24,6 +25,7 @@ MessageSchema.methods.pushToRedis = function pushToRedis(){
 MessageSchema.methods.toRedis = function toRedis(){
 	return {
 		'messageText': this.messageText,
+		'lollifiedText': this.lollifiedText,
 		'user': this.user,
 		'url': this.url,
 		'timestamp': this.timestamp.toString(),
@@ -40,6 +42,20 @@ MessageSchema.methods.getImage = function getImage(cb){
 		}
 		else{
 			that.url = stdout;
+			cb(that);
+		}
+	});
+};
+
+MessageSchema.methods.lollifyText = function lollifyText(cb){
+	var that = this;
+	exec('python scripts/english2lolspeak.py \"' + this.messageText + '\"', function(error, stdout, stderr){
+		console.log("stdout = " + stdout);
+		if (error !== null){
+			console.log("error = " + error);
+		}
+		else{
+			that.lollifiedText = stdout;
 			cb(that);
 		}
 	});

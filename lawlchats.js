@@ -83,12 +83,13 @@ io.sockets.on('connection', function (socket) {
             m.timestamp = Date.now();
             m.roomId = user.chatroom.id;
             m.getImage(function(message){
-                console.log("should emit here and update stuff.");
-                m.save();
-                user.chatroom.addMessage(m.id);
-                user.chatroom.save();
-                socket.emit('new_message', m.toRedis())
-                m.pushToRedis();
+                message.lollifyText(function(lollifiedMessage){
+                    lollifiedMessage.save();
+                    user.chatroom.addMessage(lollifiedMessage.id);
+                    user.chatroom.save();
+                    socket.emit('new_message', lollifiedMessage.toRedis())
+                    lollifiedMessage.pushToRedis();
+                });
             });
         }
     });
