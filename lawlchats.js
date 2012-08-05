@@ -48,7 +48,7 @@ var server = http.createServer(app).listen(app.get('port'), function(){
     console.log("Express server listening on port " + app.get('port'));
 });
 
-var io = require('socket.io').listen(server)
+var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
     socket.on('join_room', function (data) {
@@ -65,6 +65,18 @@ io.sockets.on('connection', function (socket) {
         })
     });
 
-    socket.emit('confirm_join', {confirmed: true, username: data.username, room: data.room});
+    socket.on('enter_message', function(data){
+        console.log(data);
+        var m = new Message();
+        m.user = data.user;
+        m.message_text = data.message_text;
+        m.timestamp = Date.now;
+        m.roomId = data.roomId;
+        m.save();
+
+        
+    });
+
+    //socket.emit('confirm_join', {confirmed: true, username: data.username, room: data.room});
 });
 
