@@ -17,7 +17,7 @@ html(lang="en")
                 tr
                     th Chatroom: 
                     td
-                        input(type='text', name='room', id='room')
+                        input(type='text', name='room', id='room', value='crittercism')
             input(type='submit', name='testsubmitbutton', onclick='join_room()')
         div(id='chatroom', style='display:none;')
         div(id='enter_text', style='display:none;')
@@ -59,6 +59,7 @@ html(lang="en")
             var messageText = $("#message_text").val();
             if (messageText == '') { return; }
             else {
+                $("#message_text").val('');
                 socket.emit('enter_message', { 'messageText': messageText });
             }
         }
