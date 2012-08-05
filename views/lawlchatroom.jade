@@ -28,8 +28,8 @@ html(lang="en")
         var socket = io.connect();
         var render_chatroom = function (chatroom) {
             chatroomTable = "<h3>"+chatroom.name+"</h3><table id=chats>";
-            for (line in chatroom.messages) {
-                chatroomTable += "<tr><th>"+line.username+"</th><td>"+line.message_text+"</td></tr>";
+            for (message in chatroom.messages) {
+                chatroomTable += "<tr><th>"+message.user+":</th><td>"+message.messageText+"</td></tr>";
             }
             chatroomTable += "</table>";
             console.log(chatroomTable);
@@ -65,5 +65,6 @@ html(lang="en")
         });
 
         socket.on('new_message', function (message) {
-            return;
+            console.log("Message"+message);
+            $("#chats").append("<tr><th>"+message.user+":</th><td>"+message.messageText+"</td></tr>")
         });
