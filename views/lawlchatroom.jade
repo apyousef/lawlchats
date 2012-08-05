@@ -30,7 +30,7 @@ html(lang="en")
             chatroomTable = "<h3>"+chatroom.name+"</h3><table id=chats>";
             for (index in chatroom.messages) {
                 var message = chatroom.messages[index];
-                chatroomTable += "<tr><th>"+message.user+":</th><td>"+message.messageText+"</td></tr>";
+                chatroomTable += message_to_table_row(message)
             }
             chatroomTable += "</table>";
             console.log(chatroomTable);
@@ -45,6 +45,10 @@ html(lang="en")
             var room = $('#room').val();
             var username = $('#username').val();
             socket.emit('join_room', { 'room': room, 'username': username});
+        }
+
+        var message_to_table_row = function (message) {
+            return "<tr><th>"+message.user+":</th><td>"+message.messageText+"</td><td><img src='"+message.url+"'/></tr>";
         }
 
         socket.on('chatroom', function (chatroom) {
@@ -67,5 +71,5 @@ html(lang="en")
 
         socket.on('new_message', function (message) {
             console.log("Message"+message);
-            $("#chats").append("<tr><th>"+message.user+":</th><td>"+message.messageText+"</td></tr>")
+            $("#chats").append(message_to_table_row(message));
         });

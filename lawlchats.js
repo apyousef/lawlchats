@@ -85,8 +85,6 @@ io.sockets.on('connection', function (socket) {
             m.getImage(function(message){
                 console.log("should emit here and update stuff.");
                 m.save();
-
-
                 user.chatroom.addMessage(m.id);
                 user.chatroom.save();
                 socket.emit('new_message', m.toRedis())
