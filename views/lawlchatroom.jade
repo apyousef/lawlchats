@@ -74,3 +74,11 @@ html(lang="en")
             console.log("Message"+message);
             $("#chats").append(message_to_table_row(message));
         });
+        
+        $('#message_text').bind('keypress', function(e) {
+            if (e.keyCode==13) {
+                e.preventDefault();
+                send_message();
+                return;
+            }
+        });
