@@ -37,11 +37,12 @@ MessageSchema.methods.getImage = function getImage(cb){
 	var that = this;
 	exec('python scripts/get_cat.py \"' + this.messageText + '\"', function(error, stdout, stderr){
 		console.log("stdout  = " + stdout);
+		console.log("index of None" + stdout.indexOf("None"))
 		if (error !== null){
 			console.log("error = " + error);
 		}
 		else{
-			if (stdout != "None"){
+			if (stdout.length >= 4 && stdout.substr(0,4).indexOf("None") == -1){
 				that.url = stdout;
 			}
 			cb(that);
@@ -52,7 +53,6 @@ MessageSchema.methods.getImage = function getImage(cb){
 MessageSchema.methods.lollifyText = function lollifyText(cb){
 	var that = this;
 	exec('python scripts/english2lolspeak.py \"' + this.messageText + '\"', function(error, stdout, stderr){
-		console.log("stdout = " + stdout);
 		if (error !== null){
 			console.log("error = " + error);
 		}
