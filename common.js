@@ -5,7 +5,8 @@ var mongoose = require('mongoose')
 var redis = require('redis-url');
 var redis_client = redis.connect(process.env.REDISTOGO_URL);
 
-var mongo_conn = mongoose.createConnection('mongodb://localhost:27017/lawlchatgoose');
+//var mongo_conn = mongoose.createConnection('mongodb://localhost:27017/lawlchatgoose');
+var mongo_conn = mongoose.connect(process.env.MONGOHQ_URL);
 
 
 Common = {
