@@ -20,7 +20,7 @@ ChatRoom.method.enterRoom = function enterRoom(userString){
 	return false;
 };
 
-ChatRoom.method.getRedisKey()
+ChatRoom.method.getRedisKey = function ()
 {
 	return "chatroom." + this.id;
 }
