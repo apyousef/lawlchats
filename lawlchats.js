@@ -87,8 +87,10 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('disconnect', function () {
-        user.chatroom.exitRoom(user.username);
-        user.chatroom.save();
+        if (user.chatroom) {
+            user.chatroom.exitRoom(user.username);
+            user.chatroom.save();
+        }
     });
 });
 

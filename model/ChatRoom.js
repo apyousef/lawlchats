@@ -35,7 +35,8 @@ ChatRoomSchema.statics.getRedisKeyForId = function getRedisKeyForId(roomId){
 }
 
 ChatRoomSchema.methods.getChatRoom = function getChatRoom(){
-	var messageObjectArray = redis_client.lrange(ChatRoom.getRedisKeyForId(this.id), 0, -1);
+	var messageObjectArray = redis_client.lrange(ChatRoomSchema.statics.getRedisKeyForId(this.id), 0, -1);
+	console.log("messageObjectArray = " + messageObjectArray);
 	var chatRoom = {
 		name: this.name,
 		users: this.users,
