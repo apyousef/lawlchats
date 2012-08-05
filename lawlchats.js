@@ -86,8 +86,8 @@ io.sockets.on('connection', function (socket) {
                 message.lollifyText(function(lollifiedMessage){
                     lollifiedMessage.save();
                     user.chatroom.addMessage(lollifiedMessage.id);
-                    user.chatroom.save();
-                    socket.emit('new_message', lollifiedMessage.toRedis())
+                user.chatroom.save();
+                    io.sockets.in(user.chatroom.name).emit('new_message', lollifiedMessage.toRedis())
                     lollifiedMessage.pushToRedis();
                 });
             });
