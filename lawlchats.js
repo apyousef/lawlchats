@@ -51,14 +51,16 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
+    var user = {};
     socket.on('join_room', function (data) {
         ChatRoom.findOne({name: data.room}, function (err, room) {
-            console.log(room)
             if (room == {}) {
                 room = new ChatRoom(data.room);
             }
-            if (room.join(data.username)) {
+            if (room.enterRoom(data.username)) {
                 socket.join(room.name);
+                user.username = data.username;
+                user.chatroom = room;
                 socket.emit('chatroom', room.getChatRoom())
                 io.sockets.in(room.name).emit('announce_user', {username: data.username});
             }
@@ -66,17 +68,19 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('enter_message', function(data){
-        console.log(data);
-        var m = new Message();
-        m.user = data.user;
-        m.message_text = data.message_text;
-        m.timestamp = Date.now;
-        m.roomId = data.roomId;
-        m.save();
-
-        
+        if (user.chatroom) {
+            console.log(data);
+            var m = new Message();
+            m.user = data.user;
+            m.message_text = data.message_text;
+            m.timestamp = Date.now;
+            m.roomId = data.roomId;
+            m.save();
+        }
     });
 
-    //socket.emit('confirm_join', {confirmed: true, username: data.username, room: data.room});
+    socket.on('disconnect', function () {
+        user.chatroom.exitRoom(user.username);
+    }
 });
 
