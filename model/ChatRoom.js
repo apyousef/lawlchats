@@ -58,7 +58,7 @@ ChatRoomSchema.methods.getChatRoom = function getChatRoom(cb){
 				if (res.length > 0)
 				{
 					console.log("res length is " + res.length);
-					for (i in res){
+					for (var i = res.length - 1; i >= 0; i--){
 						json_res.push(JSON.parse(res[i]));
 					}
 				}
