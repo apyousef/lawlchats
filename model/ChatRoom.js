@@ -8,7 +8,6 @@ var mongo_conn = common.mongo_conn,
 
 var ChatRoom = new Schema({
     name: {type: String, default: 'lawlsac'},
-    hash: String,
     usersArray: [String],
     messageIdArray: [String]
 });
@@ -23,7 +22,7 @@ ChatRoom.method.enterRoom = function enterRoom(userString){
 
 ChatRoom.method.getRedisKey()
 {
-	return "chatroom." + this.hash;
+	return "chatroom." + this.id;
 }
 
 ChatRoom.method.getChatRoom = function getChatRoom(){
@@ -31,7 +30,6 @@ ChatRoom.method.getChatRoom = function getChatRoom(){
 	console.log("messageList = " + messageList);
 	var chatRoom = {
 		name: this.name,
-		hash: this.hash,
 		users: this.users,
 		messages: messageObjectArray
 	};
