@@ -21,13 +21,19 @@ ChatRoom.method.enterRoom = function enterRoom(userString){
 	return false;
 };
 
+ChatRoom.method.getRedisKey()
+{
+	return "chatroom." + this.hash;
+}
+
 ChatRoom.method.getChatRoom = function getChatRoom(){
-	var messageObjects = {};
+	var messageList = redis_client.lrange(this.getRedisKey(), 0, -1);
+	console.log("messageList = " + messageList);
 	var chatRoom = {
 		name: this.name,
 		hash: this.hash,
 		users: this.users,
-		messages: messageObjects
+		messages: messageList
 	};
 	return chatRoom;
 };
