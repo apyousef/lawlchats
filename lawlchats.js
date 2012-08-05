@@ -52,6 +52,18 @@ var io = require('socket.io').listen(server)
 
 io.sockets.on('connection', function (socket) {
     socket.on('join_room', function (data) {
+        if (ChatRoom.findOne({name: data.room}, function (err, room) {
+            console.log(room)
+            if (room == {}) {
+                room = new ChatRoom(data.room);
+            }
+            if (room.join(data.username)) {
+                socket.join(room.name);
+                socket.emit('chatroom', room.getChatRoom())
+                io.sockets.in(room.name).emit('announce_user', {username: data.username});
+            }
+        }
+
         socket.emit('confirm_join', {confirmed: true, username: data.username, room: data.room});
     });
 });
