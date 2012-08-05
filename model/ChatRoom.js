@@ -9,13 +9,13 @@ var mongo_conn = common.mongo_conn,
 var ChatRoom = new Schema({
     name: {type: String, default: 'lawlsac'},
     hash: String,
-    users: [String],
-    message_id_list: [String]
+    usersArray: [String],
+    messageIdArray: [String]
 });
 
 ChatRoom.method.enterRoom = function enterRoom(userString){
-	if (this.users.indexOf(userString) == -1) {
-		this.users.push(userString);
+	if (this.usersArray.indexOf(userString) == -1) {
+		this.usersArray.push(userString);
 		return true;
 	}
 	return false;
@@ -26,7 +26,7 @@ ChatRoom.method.getChatRoom = function getChatRoom(){
 	var chatRoom = {
 		name: this.name,
 		hash: this.hash,
-		users: this.users,
+		users: this.usersArray,
 		messages: messageObjects
 	};
 	return chatRoom;

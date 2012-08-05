@@ -37,7 +37,7 @@ html(lang="en")
         var render_chatroom = function (chatroom) {
             chatroomTable = "<table id=chats>"
             for (line in chatroom.messages) {
-                chatroomTable += "<tr><th>"+line.username+"</th><td>"+line.message"</td></tr>";
+                chatroomTable += "<tr><th>"+line.username+"</th><td>"+line.message_text"</td></tr>";
             }
             chatroomTable += </table>;
             $("#chatroom").html(chatroomTable);
