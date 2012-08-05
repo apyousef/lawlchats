@@ -28,6 +28,7 @@ html(lang="en")
                 chatroomTable += "<tr><th>"+line.username+"</th><td>"+line.message_text+"</td></tr>";
             }
             chatroomTable += "</table>";
+            console.log(chatroomTable);
             $("#chatroom").html(chatroomTable);
         }
 
@@ -36,6 +37,7 @@ html(lang="en")
         });
 
         var join_room = function () {
+            console.log("join_room called");
             var room = $('#room').val()
             var username = $('#username').val()
             socket.emit('join_room', { 'room': room, 'username': username});
