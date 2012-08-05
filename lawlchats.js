@@ -65,6 +65,7 @@ io.sockets.on('connection', function (socket) {
                 user.chatroom = room;
                 room.save()
                 room.getChatRoom(function(chatRoom){
+                    console.log("chatRoom = " + JSON.stringify(chatRoom));
                     socket.emit('chatroom', chatRoom);
                 });
                 io.sockets.in(room.name).emit('announce_user', {username: data.username});

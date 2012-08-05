@@ -18,7 +18,7 @@ var MessageSchema = new Schema({
 
 MessageSchema.methods.pushToRedis = function pushToRedis(){
 	var chatroom = require('./ChatRoom.js');
-	redis_client.lpush(chatroom.getRedisKeyForId(this.roomId), this.toRedis());
+	redis_client.lpush(chatroom.getRedisKeyForId(this.roomId), JSON.stringify(this.toRedis()));
 };
 
 MessageSchema.methods.toRedis = function toRedis(){
