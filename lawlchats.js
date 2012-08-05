@@ -64,7 +64,9 @@ io.sockets.on('connection', function (socket) {
                 user.username = data.username;
                 user.chatroom = room;
                 room.save()
-                socket.emit('chatroom', room.getChatRoom())
+                room.getChatRoom(function(chatRoom){
+                    socket.emit('chatroom', chatRoom);
+                });
                 io.sockets.in(room.name).emit('announce_user', {username: data.username});
             }
         })
