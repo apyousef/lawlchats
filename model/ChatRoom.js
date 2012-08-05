@@ -13,10 +13,14 @@ var ChatRoomSchema = new Schema({
 });
 
 ChatRoomSchema.methods.enterRoom = function enterRoom(userString){
+	console.log("this.usersArray = " + this.usersArray);
+	console.log("userString = " + userString);
 	if (this.usersArray.indexOf(userString) == -1) {
 		this.usersArray.push(userString);
+		console.log("returning true");
 		return true;
 	}
+	console.log("returning false");
 	return false;
 };
 
