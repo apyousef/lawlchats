@@ -1,6 +1,9 @@
 {
   "name": "Lawlchats",
   "version": "0.0.1",
+  "engines": {
+    "npm": "1.0.x"
+  },
   "private": true,
   "scripts": {
     "start": "node app"
