@@ -87,7 +87,7 @@ io.sockets.on('connection', function (socket) {
                 m.save();
                 user.chatroom.addMessage(m.id);
                 user.chatroom.save();
-                socket.emit('new_message', m.toRedis())
+                io.sockets.in(user.chatroom.name).emit('new_message', m.toRedis());
                 m.pushToRedis();
             });
         }
