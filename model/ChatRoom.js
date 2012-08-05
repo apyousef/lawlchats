@@ -20,13 +20,13 @@ ChatRoom.method.enterRoom = function enterRoom(userString){
 	return false;
 };
 
-ChatRoom.method.getRedisKey = function ()
-{
-	return "chatroom." + this.id;
+
+ChatRoom.statics.getRedisKeyForId = function getRedisKeyForId(roomId){
+	return "chatroom." + roomId;
 }
 
 ChatRoom.method.getChatRoom = function getChatRoom(){
-	var messageObjectArray = redis_client.lrange(this.getRedisKey(), 0, -1);
+	var messageObjectArray = redis_client.lrange(ChatRoom.getRedisKeyForId(this.id), 0, -1);
 	console.log("messageList = " + messageList);
 	var chatRoom = {
 		name: this.name,
