@@ -23,15 +23,12 @@ def get_meme(query, message):
     query = urllib.quote(query)
     url = 'http://version1.api.memegenerator.net/Generators_Search?q='\
             '%s&pageIndex=0&pageSize=1' % query
-    print url
     html = urllib.urlopen(url).read()
     d = json.loads(html)
-    print d
     try:
         img_url = d['result'][0]['imageUrl']
         generatorID = d['result'][0]['generatorID']
         imageID = re.search('\d+(?=\.jpg)', img_url).group(0)
-        print 'hi'
         return add_capshun(img_url, message, generatorID, imageID)
     except Exception as e:
         #raise e
