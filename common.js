@@ -1,15 +1,15 @@
-console.log(global.process.env.NODE_ENV);
+var mongoose = require('mongoose');
+var redis, redis_client, mongo_conn;
 
-var mongoose = require('mongoose')
-    //redis = require('redis'),
-    //redis_client = redis.createClient(6383, 'localhost');
-
-var redis = require('redis-url');
-var redis_client = redis.connect(process.env.REDISTOGO_URL);
-
-//var mongo_conn = mongoose.createConnection('mongodb://localhost:27017/lawlchatgoose');
-var mongo_conn = mongoose.connect(process.env.MONGOHQ_URL);
-
+if (global.process.env.NODE_ENV=='production') {
+    redis = require('redis-url');
+    redis_client = redis.connect(process.env.REDISTOGO_URL);
+    mongo_conn = mongoose.connect(process.env.MONGOHQ_URL);
+} else {
+    mongo_conn = mongoose.createConnection('mongodb://localhost:27017/lawlchatgoose');
+    redis = require('redis'),
+    redis_client = redis.createClient(6383, 'localhost');
+}
 
 Common = {
 	mongo_conn: mongo_conn,
