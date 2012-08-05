@@ -8,28 +8,34 @@ html(lang="en")
     
     body
         h1 LawlChat
-        table
-            tr 
-                th Username: 
-                td
-                    input(type='text', name='username', id='username')
-            tr
-                th Chatroom: 
-                td
-                    input(type='text', name='room', id='room')
-        input(type='submit', name='testsubmitbutton', onclick='join_room()')
-        div(name='chatroom', style='display:none;')
+        div(id="sign_in")
+            table
+                tr 
+                    th Username: 
+                    td
+                        input(type='text', name='username', id='username')
+                tr
+                    th Chatroom: 
+                    td
+                        input(type='text', name='room', id='room')
+            input(type='submit', name='testsubmitbutton', onclick='join_room()')
+        div(id='chatroom', style='display:none;')
+        div(id='enter_text', style='display:none;')
+            input(type='text', name='message_text', id='message_text')
+            input
 
     script(type= "text/javascript")
         var socket = io.connect();
         var render_chatroom = function (chatroom) {
             chatroomTable = "<table id=chats>";
-            for (line in chatroom.messagesObjectArray) {
+            for (line in chatroom.messages) {
                 chatroomTable += "<tr><th>"+line.username+"</th><td>"+line.message_text+"</td></tr>";
             }
             chatroomTable += "</table>";
             console.log(chatroomTable);
             $("#chatroom").html(chatroomTable);
+            $("#chatroom").show();
+            $("#enter_text").show();  
         }
 
         $('#join_form').submit(function (e) {
@@ -38,8 +44,9 @@ html(lang="en")
 
         var join_room = function () {
             console.log("join_room called");
-            var room = $('#room').val()
-            var username = $('#username').val()
+            $("#sign_in").hide();
+            var room = $('#room').val();
+            var username = $('#username').val();
             socket.emit('join_room', { 'room': room, 'username': username});
         }
 
