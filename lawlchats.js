@@ -78,14 +78,19 @@ io.sockets.on('connection', function (socket) {
             var m = new Message();
             m.user = user.username;
             m.message_text = data.message_text;
+
             m.timestamp = Date.now();
             m.roomId = user.chatroom.id;
-            m.save();
+            m.getImage(function(message){
+                console.log("should emit here and update stuff.");
+                m.save();
 
-            user.chatroom.addMessage(m.id);
-            user.chatroom.save();
-            socket.emit('new_message', m.toRedis())
-            m.pushToRedis();
+
+                user.chatroom.addMessage(m.id);
+                user.chatroom.save();
+                socket.emit('new_message', m.toRedis())
+                m.pushToRedis();
+            });
         }
     });
 
