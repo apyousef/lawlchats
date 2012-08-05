@@ -76,14 +76,14 @@ io.sockets.on('connection', function (socket) {
         if (user.chatroom) {
             console.log(data);
             var m = new Message();
-            m.user = data.user;
+            m.user = user.username;
             m.message_text = data.message_text;
-            m.timestamp = Date.now;
-            m.roomId = data.roomId;
 
             m.getImage(function(message){
                 console.log("should emit here and update stuff.");
             });
+            m.timestamp = Date.now();
+            m.roomId = user.chatroom.id;
             m.save();
 
 
