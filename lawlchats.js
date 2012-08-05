@@ -65,6 +65,7 @@ io.sockets.on('connection', function (socket) {
                 user.chatroom = room;
                 room.save()
                 room.getChatRoom(function(chatRoom){
+                    console.log("chatRoom = " + JSON.stringify(chatRoom));
                     socket.emit('chatroom', chatRoom);
                 });
                 io.sockets.in(room.name).emit('announce_user', {username: data.username});
@@ -82,14 +83,13 @@ io.sockets.on('connection', function (socket) {
             m.timestamp = Date.now();
             m.roomId = user.chatroom.id;
             m.getImage(function(message){
-                console.log("should emit here and update stuff.");
-                m.save();
-
-
-                user.chatroom.addMessage(m.id);
+                message.lollifyText(function(lollifiedMessage){
+                    lollifiedMessage.save();
+                    user.chatroom.addMessage(lollifiedMessage.id);
                 user.chatroom.save();
-                socket.emit('new_message', m.toRedis())
-                m.pushToRedis();
+                    io.sockets.in(user.chatroom.name).emit('new_message', lollifiedMessage.toRedis())
+                    lollifiedMessage.pushToRedis();
+                });
             });
         }
     });

@@ -3,6 +3,7 @@
 import sys
 import urllib
 import json
+import random
 
 def get_cat(message):
     message = filter(lambda c : c.isalpha or c == ' ', message)
@@ -12,7 +13,8 @@ def get_cat(message):
     #print api_url + query
     d = json.loads(html)
     try:
-        return d['responseData']['results'][0]['url']
+        results = d['responseData']['results']
+        return results[random.randint(0, len(results)-1)]['url']
     except:
         return None
 
