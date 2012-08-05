@@ -7,7 +7,7 @@ import json
 def get_cat(message):
     message = filter(lambda c : c.isalpha or c == ' ', message)
     api_url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q='
-    query = urllib.quote('lolcat ' + message)
+    query = urllib.quote('lolcat lolcat lolcat ' + message)
     html = urllib.urlopen(api_url + query).read()
     #print api_url + query
     d = json.loads(html)
