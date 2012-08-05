@@ -77,7 +77,7 @@ io.sockets.on('connection', function (socket) {
             console.log(data);
             var m = new Message();
             m.user = user.username;
-            m.message_text = data.message_text;
+            m.messageText = data.messageText;
 
             m.timestamp = Date.now();
             m.roomId = user.chatroom.id;

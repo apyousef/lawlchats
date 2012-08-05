@@ -28,7 +28,8 @@ html(lang="en")
         var socket = io.connect();
         var render_chatroom = function (chatroom) {
             chatroomTable = "<h3>"+chatroom.name+"</h3><table id=chats>";
-            for (message in chatroom.messages) {
+            for (index in chatroom.messages) {
+                var message = chatroom.messages[index];
                 chatroomTable += "<tr><th>"+message.user+":</th><td>"+message.messageText+"</td></tr>";
             }
             chatroomTable += "</table>";
@@ -51,10 +52,10 @@ html(lang="en")
         });
 
         var send_message = function () {
-            var message_text = $("#message_text").val();
-            if (message_text == '') { return; }
+            var messageText = $("#message_text").val();
+            if (messageText == '') { return; }
             else {
-                socket.emit('enter_message', { 'message_text': message_text});
+                socket.emit('enter_message', { 'messageText': messageText });
             }
         }
 
