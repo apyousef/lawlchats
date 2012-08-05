@@ -32,11 +32,12 @@ html(lang="en")
                         input(type='text', name='room', id='room')
             input(type='submit', name='testsubmitbutton', value='Go!')
         div(name='chatroom', style='display:none;')
+
     script(type= "text/javascript")
         var socket = io.connect();
         var render_chatroom = function (chatroom) {
             chatroomTable = "<table id=chats>"
-            for (line in chatroom.messages) {
+            for (line in chatroom.messagesObjectArray) {
                 chatroomTable += "<tr><th>"+line.username+"</th><td>"+line.message_text"</td></tr>";
             }
             chatroomTable += </table>;
