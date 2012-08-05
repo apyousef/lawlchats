@@ -3,26 +3,24 @@
 
 import sys
 import json
+import re
 
 lookup = None
 with open('tranzlator.json', 'r') as f:
     lookup = json.loads(f.read())
 
-def to_lolspeak(english_message):
-    english_words = english_message.split(' ')
-    lolspeak_words = []
-    for english_word in english_words:
-        valid_letter = lambda s : s.isalpha() or s == '\''
-        english_word = filter(valid_letter, english_word)
-        was_capitalized = english_word[0].isupper()
-        english_word = english_word.lower()
-        lolspeak_word = english_word
-        if english_word in lookup:
-            lolspeak_word = lookup[english_word]
-        if was_capitalized:
+def lolify_word(matchobj):
+    english_word = matchobj.group(0)
+    if english_word.lower() in lookup:
+        lolspeak_word = lookup[english_word.lower()]
+        if english_word[0].isupper():
             lolspeak_word = lolspeak_word[0].upper() + lolspeak_word[1:]
-        lolspeak_words.append(lolspeak_word)
-    return ' '.join(lolspeak_words)
+        return lolspeak_word
+    else:
+        return english_word
+
+def to_lolspeak(english_message):
+    return re.sub('[a-zA-z\']+', lolify_word, english_message)
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
