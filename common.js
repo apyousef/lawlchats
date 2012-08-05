@@ -1,3 +1,5 @@
+console.log(global.process.env.NODE_ENV);
+
 var mongoose = require('mongoose')
     //redis = require('redis'),
     //redis_client = redis.createClient(6383, 'localhost');
