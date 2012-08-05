@@ -54,6 +54,7 @@ io.sockets.on('connection', function (socket) {
     var user = {};
     socket.on('join_room', function (data) {
         ChatRoom.findOne({name: data.room}, function (err, room) {
+            console.log("room =" + room);
             if (room == null) {
                 room = new ChatRoom();
                 room.name = data.room;
