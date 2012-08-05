@@ -48,11 +48,35 @@ var server = http.createServer(app).listen(app.get('port'), function(){
     console.log("Express server listening on port " + app.get('port'));
 });
 
-var io = require('socket.io').listen(server)
+var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
     socket.on('join_room', function (data) {
-        socket.emit('confirm_join', {confirmed: true, username: data.username, room: data.room});
+        ChatRoom.findOne({name: data.room}, function (err, room) {
+            console.log(room)
+            if (room == {}) {
+                room = new ChatRoom(data.room);
+            }
+            if (room.join(data.username)) {
+                socket.join(room.name);
+                socket.emit('chatroom', room.getChatRoom())
+                io.sockets.in(room.name).emit('announce_user', {username: data.username});
+            }
+        })
     });
+
+    socket.on('enter_message', function(data){
+        console.log(data);
+        var m = new Message();
+        m.user = data.user;
+        m.message_text = data.message_text;
+        m.timestamp = Date.now;
+        m.roomId = data.roomId;
+        m.save();
+
+        
+    });
+
+    //socket.emit('confirm_join', {confirmed: true, username: data.username, room: data.room});
 });
 

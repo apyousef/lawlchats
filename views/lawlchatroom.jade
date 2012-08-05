@@ -31,14 +31,26 @@ html(lang="en")
                     td
                         input(type='text', name='room', id='room')
             input(type='submit', name='testsubmitbutton', value='Go!')
-    
+        div(name='chatroom', style='display:none;')
+
     script(type= "text/javascript")
         var socket = io.connect();
+        var render_chatroom = function (chatroom) {
+            chatroomTable = "<table id=chats>"
+            for (line in chatroom.messagesObjectArray) {
+                chatroomTable += "<tr><th>"+line.username+"</th><td>"+line.message_text"</td></tr>";
+            }
+            chatroomTable += </table>;
+            $("#chatroom").html(chatroomTable);
+        }
+
         var join_room = function () {
             var room = $('#room').val()
             var username = $('#username').val()
             socket.emit('join_room', { 'room': room, 'username': username});
         }
+
+        socket.on('chatroom', render_chatroom(chatroom)); 
 
         socket.on('confirm_join', function (confirmation) {
             if (confirmation.confirmed) {
