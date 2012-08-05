@@ -7,7 +7,9 @@ var mongo_conn = common.mongo_conn;
 
 var ChatRoom = new Schema({
     name: {type: String, default: 'lawlsac'},
-    hash: String
+    hash: String,
+    users: [String],
+    message_id: [String]
 });
 
 module.exports = mongo_conn.model('chatroom', ChatRoom);
