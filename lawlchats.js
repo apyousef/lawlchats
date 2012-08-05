@@ -76,11 +76,17 @@ io.sockets.on('connection', function (socket) {
             m.timestamp = Date.now;
             m.roomId = data.roomId;
             m.save();
+
+            user.chatroom.addMessage(m.id);
+            user.chatroom.save();
+
+            m.pushToRedis();
         }
     });
 
     socket.on('disconnect', function () {
         user.chatroom.exitRoom(user.username);
+        user.chatroom.save();
     }
 });
 

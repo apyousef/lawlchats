@@ -20,6 +20,15 @@ ChatRoom.method.enterRoom = function enterRoom(userString){
 	return false;
 };
 
+ChatRoom.method.exitRoom = function exitRoom(userString){
+	if (this.usersArray.indexOf(userString) != -1) {
+		this.usersArray.pop(userString);
+	}
+};
+
+ChatRoom.method.addMessage = function addMessage(messageId){
+	this.messageIdArray.push(messageId);
+};
 
 ChatRoom.statics.getRedisKeyForId = function getRedisKeyForId(roomId){
 	return "chatroom." + roomId;
