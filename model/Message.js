@@ -41,7 +41,9 @@ MessageSchema.methods.getImage = function getImage(cb){
 			console.log("error = " + error);
 		}
 		else{
-			that.url = stdout;
+			if (stdout != "None"){
+				that.url = stdout;
+			}
 			cb(that);
 		}
 	});
