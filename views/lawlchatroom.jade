@@ -48,7 +48,7 @@ html(lang="en")
         }
 
         var message_to_table_row = function (message) {
-            return "<tr><th>"+message.user+":</th><td>"+message.messageText+"</td><td><img src='"+message.url+"'/></tr>";
+            return "<tr><th>"+message.user+":</th><td>"+message.lollifiedText+"</td><td><img src='"+message.url+"'/></tr>";
         }
 
         socket.on('chatroom', function (chatroom) {
