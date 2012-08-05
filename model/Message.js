@@ -33,7 +33,7 @@ MessageSchema.methods.toRedis = function toRedis(){
 
 MessageSchema.methods.getImage = function getImage(cb){
 	var that = this;
-	exec('python get_cat.py \"' + this.messageText + '\"', function(error, stdout, stderr){
+	exec('python scripts/get_cat.py \"' + this.messageText + '\"', function(error, stdout, stderr){
 		console.log("stdout  = " + stdout);
 		if (error !== null){
 			console.log("error = " + error);
