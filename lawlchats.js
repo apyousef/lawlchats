@@ -80,7 +80,12 @@ io.sockets.on('connection', function (socket) {
             m.message_text = data.message_text;
             m.timestamp = Date.now;
             m.roomId = data.roomId;
+
+            m.getImage(function(message){
+                console.log("should emit here and update stuff.");
+            });
             m.save();
+
 
             user.chatroom.addMessage(m.id);
             user.chatroom.save();

@@ -1,7 +1,9 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    common = require('../common.js');
+    common = require('../common.js'),
+    sys = require('sys'),
+    exec = require('child_process').exec;
 
 var mongo_conn = common.mongo_conn,
     redis_client = common.redis_client;;
@@ -27,6 +29,19 @@ MessageSchema.methods.toRedis = function toRedis(){
 		'timestamp': this.timestamp.toString(),
 		'roomId': this.roomId
 	};
+};
+
+MessageSchema.methods.getImage = function getImage(cb){
+	var that = this;
+	exec('python get_cat.py \"' + this.messageText + '\"', function(error, stdout, stderr){
+		console.log("stdout  = " + stdout);
+		if (error !== null){
+			console.log("error = " + error);
+		}
+		else{
+			cb(that);
+		}
+	});
 };
 
 module.exports = mongo_conn.model('message', MessageSchema);
