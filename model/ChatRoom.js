@@ -39,7 +39,7 @@ ChatRoomSchema.statics.getRedisKeyForId = function getRedisKeyForId(roomId){
 
 ChatRoomSchema.methods.getChatRoom = function getChatRoom(cb){
 		var that = this;
-		redis_client.lrange(ChatRoomSchema.statics.getRedisKeyForId(this.id), 0, -1, function(err, res){
+		redis_client.lrange(ChatRoomSchema.statics.getRedisKeyForId(this.id), 0, 20, function(err, res){
 				console.log("res = " + res);
 				if(res)
 				{
