@@ -50,6 +50,13 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 
 var io = require('socket.io').listen(server);
 
+// Need to add this for heroku
+// https://devcenter.heroku.com/articles/using-socket-io-with-node-js-on-heroku/
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
 io.sockets.on('connection', function (socket) {
     var user = {};
     socket.on('join_room', function (data) {
