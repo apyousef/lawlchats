@@ -12,7 +12,8 @@
     "mongoose": "2.7.3",
     "hiredis": "*",
     "socket.io": "*",
-    "redis":"*"
+    "redis":"*",
+    "redis-url": "0.1.0"
   },
   "description": "lawlchats =========",
   "main": "lawlchats.js",

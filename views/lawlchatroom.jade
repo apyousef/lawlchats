@@ -1,13 +1,13 @@
 doctype 5
 html(lang="en")
     head
-        title LawlChats
+        title LawlChatz
 
         script(type= "text/javascript", src="/socket.io/socket.io.js")
         script(type= "text/javascript", src="/jquery/jquery.js")
     
     body
-        h1 LawlChat
+        h1 LawlChatz
         div(id="sign_in")
             table
                 tr 
@@ -48,7 +48,7 @@ html(lang="en")
         }
 
         var message_to_table_row = function (message) {
-            return "<tr><th>"+message.user+":</th><td>"+message.messageText+"</td><td><img src='"+message.url+"'/></tr>";
+            return "<tr><th>"+message.user+":</th><td>"+message.lollifiedText+"</td><td><img src='"+message.url+"'/></tr>";
         }
 
         socket.on('chatroom', function (chatroom) {
