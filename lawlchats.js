@@ -54,13 +54,15 @@ io.sockets.on('connection', function (socket) {
     var user = {};
     socket.on('join_room', function (data) {
         ChatRoom.findOne({name: data.room}, function (err, room) {
-            if (room == {}) {
-                room = new ChatRoom(data.room);
+            if (room == null) {
+                room = new ChatRoom();
+                room.name = data.room;
             }
             if (room.enterRoom(data.username)) {
                 socket.join(room.name);
                 user.username = data.username;
                 user.chatroom = room;
+                room.save()
                 socket.emit('chatroom', room.getChatRoom())
                 io.sockets.in(room.name).emit('announce_user', {username: data.username});
             }
@@ -79,7 +81,7 @@ io.sockets.on('connection', function (socket) {
 
             user.chatroom.addMessage(m.id);
             user.chatroom.save();
-
+            socket.emit('new_message', m.toRedis())
             m.pushToRedis();
         }
     });
@@ -87,6 +89,6 @@ io.sockets.on('connection', function (socket) {
     socket.on('disconnect', function () {
         user.chatroom.exitRoom(user.username);
         user.chatroom.save();
-    }
+    });
 });
 

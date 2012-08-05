@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 var mongo_conn = common.mongo_conn,
     redis_client = common.redis_client;;
 
-var Message = new Schema({
+var MessageSchema = new Schema({
     messageText: String,
     user: {type:String, default:'anonymous'},
     url: {type:String, default:'http://media.treehugger.com/assets/images/2011/10/al-gore-newt-gingrich-climate.jpg'},
@@ -14,12 +14,12 @@ var Message = new Schema({
     roomId: String    // Hash of the room
 });
 
-Message.method.pushToRedis = function pushToRedis(){
+MessageSchema.methods.pushToRedis = function pushToRedis(){
 	var chatroom = require('./ChatRoom.js');
 	redis_client.lpush(chatroom.getRedisKeyForId(this.roomId), this.toRedis());
 };
 
-Message.method.toRedis = function toRedis(){
+MessageSchema.methods.toRedis = function toRedis(){
 	return {
 		'messageText': this.messageText,
 		'user': this.user,
@@ -29,4 +29,4 @@ Message.method.toRedis = function toRedis(){
 	};
 };
 
-module.exports = mongo_conn.model('message', Message);
+module.exports = mongo_conn.model('message', MessageSchema);

@@ -8,17 +8,16 @@ html(lang="en")
     
     body
         h1 LawlChat
-        form(name='testsubmit', action="", method='get', onsubmit="join_room()")
-            table
-                tr 
-                    th Username: 
-                    td
-                        input(type='text', name='username', id='username')
-                tr
-                    th Chatroom: 
-                    td
-                        input(type='text', name='room', id='room')
-            input(type='submit', name='testsubmitbutton', value='Go!')
+        table
+            tr 
+                th Username: 
+                td
+                    input(type='text', name='username', id='username')
+            tr
+                th Chatroom: 
+                td
+                    input(type='text', name='room', id='room')
+        input(type='submit', name='testsubmitbutton', onclick='join_room()')
         div(name='chatroom', style='display:none;')
 
     script(type= "text/javascript")
@@ -32,13 +31,19 @@ html(lang="en")
             $("#chatroom").html(chatroomTable);
         }
 
+        $('#join_form').submit(function (e) {
+            e.preventDefaults();
+        });
+
         var join_room = function () {
             var room = $('#room').val()
             var username = $('#username').val()
             socket.emit('join_room', { 'room': room, 'username': username});
         }
 
-        socket.on('chatroom', render_chatroom); 
+        socket.on('chatroom', function (chatroom) {
+            render_chatroom(chatroom);
+        }); 
 
         socket.on('confirm_join', function (confirmation) {
             if (confirmation.confirmed) {
