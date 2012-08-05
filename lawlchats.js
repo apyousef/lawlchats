@@ -51,32 +51,54 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
+    var user = {};
     socket.on('join_room', function (data) {
         ChatRoom.findOne({name: data.room}, function (err, room) {
-            console.log(room)
-            if (room == {}) {
-                room = new ChatRoom(data.room);
+            console.log("room =" + room);
+            if (room == null) {
+                room = new ChatRoom();
+                room.name = data.room;
             }
-            if (room.join(data.username)) {
+            if (room.enterRoom(data.username)) {
                 socket.join(room.name);
-                socket.emit('chatroom', room.getChatRoom())
+                user.username = data.username;
+                user.chatroom = room;
+                room.save()
+                room.getChatRoom(function(chatRoom){
+                    socket.emit('chatroom', chatRoom);
+                });
                 io.sockets.in(room.name).emit('announce_user', {username: data.username});
             }
         })
     });
 
     socket.on('enter_message', function(data){
-        console.log(data);
-        var m = new Message();
-        m.user = data.user;
-        m.message_text = data.message_text;
-        m.timestamp = Date.now;
-        m.roomId = data.roomId;
-        m.save();
+        if (user.chatroom) {
+            console.log(data);
+            var m = new Message();
+            m.user = user.username;
+            m.messageText = data.messageText;
 
-        
+            m.timestamp = Date.now();
+            m.roomId = user.chatroom.id;
+            m.getImage(function(message){
+                console.log("should emit here and update stuff.");
+                m.save();
+
+
+                user.chatroom.addMessage(m.id);
+                user.chatroom.save();
+                socket.emit('new_message', m.toRedis())
+                m.pushToRedis();
+            });
+        }
     });
 
-    //socket.emit('confirm_join', {confirmed: true, username: data.username, room: data.room});
+    socket.on('disconnect', function () {
+        if (user.chatroom) {
+            user.chatroom.exitRoom(user.username);
+            user.chatroom.save();
+        }
+    });
 });
 
