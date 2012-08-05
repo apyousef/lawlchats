@@ -13,4 +13,9 @@ var Message = new Schema({
     roomId: String    // Hash of the room
 });
 
+Message.method.pushToRedis = function pushToRedis()
+{
+	
+}
+
 module.exports = mongo_conn.model('message', Message);
